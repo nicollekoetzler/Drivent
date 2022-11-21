@@ -16,22 +16,14 @@ async function findFirstUserTickets(enrollmentId: number) {
   });
 }
 
-async function createTicket( ticketTypeId: number, userId: number ) {
-  const enrollment = await prisma.enrollment.findFirst({
-    where: {
-      userId: userId
-    }
-  });
-
-  await prisma.ticket.create({
+async function createTicket( ticketTypeId: number, enrollmentId: number ) {
+  return await prisma.ticket.create({
     data: {
       ticketTypeId: ticketTypeId,
-      enrollmentId: enrollment.id,
+      enrollmentId,
       status: TicketStatus.RESERVED
     }
   });
-
-  return await findFirstUserTickets(userId);
 }
 
 const ticketsRepository = {

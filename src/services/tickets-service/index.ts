@@ -26,10 +26,10 @@ async function getTicket(userId: number) {
 }
 
 async function newTicket(ticketTypeId: number, userId: number) {
-  const enrollment: number = await isUserEnrolled(userId);
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) throw notFoundError();
 
-  return ticketsRepository.createTicket(ticketTypeId, userId);
+  return ticketsRepository.createTicket(ticketTypeId, enrollment.id);
 }
 
 export type TicketTypeId = {
